@@ -1,4 +1,5 @@
 const stringify = require('querystring').stringify;
+var settings = require('ep_etherpad-lite/node/utils/Settings');
 
 exports.registerRoute = (hookName, args) => {
   args.app.get("/auth_session", function(req, res) {
@@ -34,7 +35,14 @@ exports.registerRoute = (hookName, args) => {
         query[queryKey] = req.query[queryKey];
       }
 
+      let padOptions = {};
+      Object.keys(settings.padOptions).forEach(function(option) {
+          if (option in req.query) {
+              padOptions[option] = req.query[option];
+          }
+      });
       if (Object.keys(query).length > 0) {
+        r += "document.cookie = 'prefsHttp=" + JSON.stringify(padOptions) + "; path=/; SameSite=None; Secure;';\n";
         redirectUrl += "?" + stringify(query);
       }
 
