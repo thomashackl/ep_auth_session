@@ -42,7 +42,11 @@ exports.registerRoute = (hookName, args) => {
           }
       });
       if (Object.keys(query).length > 0) {
-        r += "document.cookie = 'prefsHttp=" + JSON.stringify(padOptions) + "; path=/; SameSite=None; Secure;';\n";
+        if (document.location.protocol == 'https:') {
+            r += "document.cookie = 'prefs=" + JSON.stringify(padOptions) + "; path=/; SameSite=None; Secure;';\n";
+        } else {
+            r += "document.cookie = 'prefsHttp=" + JSON.stringify(padOptions) + "; path=/; SameSite=None; Secure;';\n";
+        }
         redirectUrl += "?" + stringify(query);
       }
 
