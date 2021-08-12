@@ -42,7 +42,7 @@ exports.registerRoute = (hookName, args) => {
           }
       });
       if (Object.keys(query).length > 0) {
-        if (document.location.protocol == 'https:') {
+        if (req.secure) {
             r += "document.cookie = 'prefs=" + JSON.stringify(padOptions) + "; path=/; SameSite=None; Secure;';\n";
         } else {
             r += "document.cookie = 'prefsHttp=" + JSON.stringify(padOptions) + "; path=/; SameSite=None; Secure;';\n";
